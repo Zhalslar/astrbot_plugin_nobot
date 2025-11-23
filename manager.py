@@ -1,11 +1,12 @@
-from typing import Any, Dict, List
 from datetime import datetime, timedelta
+from typing import Any
+
 from astrbot import logger
 from astrbot.core.config.astrbot_config import AstrBotConfig
 
 
 class BotManager:
-    def __init__(self, bot_data: Dict[str, Dict[str, str]], config: AstrBotConfig):
+    def __init__(self, bot_data: dict[str, dict[str, str]], config: AstrBotConfig):
         """
         管理多个群组的人机识别记录、监控与禁言状态。
         :param bot_data: 群组数据字典，格式如下：
@@ -19,19 +20,19 @@ class BotManager:
         self.data = bot_data
         self.config = config
 
-    def _get_group(self, group_id: str) -> Dict[str, Any] | None:
+    def _get_group(self, group_id: str) -> dict[str, Any] | None:
         """获取指定群组的数据，如果不存在则返回 None 而不是创建新条目。"""
         return self.data.get(group_id, None)
 
-    def _get_or_create_group(self, group_id: str) -> Dict[str, Any]:
+    def _get_or_create_group(self, group_id: str) -> dict[str, Any]:
         """获取指定群组的数据，如果不存在则创建默认值。"""
         return self.data.setdefault(group_id, {})
 
-    def get_groups(self) -> List[str]:
+    def get_groups(self) -> list[str]:
         """获取所有管理的群组 ID 列表。"""
         return list(self.data.keys())
 
-    def get_bot_ids(self, group_id: str) -> List[str]:
+    def get_bot_ids(self, group_id: str) -> list[str]:
         """获取指定群组下的所有 Bot ID。"""
         group = self._get_or_create_group(group_id)
         return list(group.keys())
