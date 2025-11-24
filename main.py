@@ -77,7 +77,7 @@ class NobotPlugin(Star):
 
     @filter.permission_type(filter.PermissionType.ADMIN)
     @filter.command("标记人机", alias={"杀"})
-    async def label_bot(self, event: AstrMessageEvent):
+    async def label_bot(self, event: AiocqhttpMessageEvent):
         """标记人机"""
         group_id = event.get_group_id()
         bot_ids = get_ats(event)
@@ -102,7 +102,7 @@ class NobotPlugin(Star):
             yield event.plain_result(f"已取消【{bot_name}】的人机标记")
 
     @filter.command("人机列表")
-    async def bot_list(self, event: AstrMessageEvent):
+    async def bot_list(self, event: AiocqhttpMessageEvent):
         """人机列表"""
         group_id = event.get_group_id()
         bot_ids = self.bm.get_bot_ids(group_id)
@@ -113,13 +113,13 @@ class NobotPlugin(Star):
 
     @filter.permission_type(filter.PermissionType.ADMIN)
     @filter.command("找人机")
-    async def handle_empty_mention(self, event: AstrMessageEvent):
+    async def handle_empty_mention(self, event: AiocqhttpMessageEvent):
         """找出群里的人机"""
         timeout = self.conf["test_interval"] * (len(self.conf["test_cmds"]) + 1)
 
         @session_waiter(timeout=timeout, record_history_chains=False)  # type: ignore
         async def empty_mention_waiter(
-            controller: SessionController, event: AstrMessageEvent
+            controller: SessionController, event: AiocqhttpMessageEvent
         ):
             chain = event.get_messages()
             message_str = event.message_str
