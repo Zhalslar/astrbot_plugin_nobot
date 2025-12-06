@@ -38,15 +38,18 @@ class NobotPlugin(Star):
         """人机禁言"""
         gid = event.get_group_id()
         mode = parse_bool(mode_str)
+        groups = self.conf["monitoring_groups"]
         match mode:
             case True:
-                await self.conf["monitoring_groups"].append(gid)
-                self.conf.save_config()
+                if gid not in groups:
+                    groups.append(gid)
+                    self.conf.save_config()
             case False:
-                await self.conf["monitoring_groups"].remove(gid)
-                self.conf.save_config()
+                if gid in groups:
+                    groups.remove(gid)
+                    self.conf.save_config()
             case None:
-                mode = bool(gid in self.conf["monitoring_groups"])
+                mode = gid in groups
         yield event.plain_result(f"本群人机禁言：{mode}")
 
 
@@ -107,11 +110,11 @@ class NobotPlugin(Star):
             nicknames.append(nickname)
             if event.is_admin():
                 await self.db.add(bid, "gids", gid)
-                await self.db.add(bid, "nickname", nickname)
+                await self.db.set(bid, "nickname", nickname)
         yield event.plain_result(f"找到的人机: {nicknames}")
 
 
     @filter.event_message_type(EventMessageType.GROUP_MESSAGE)
     async def handle_msg(self, event: AiocqhttpMessageEvent):
         """强制控制人机发言"""
-        self.controller.handle_msg(event)
+        await self.controller.handle_msg(event)

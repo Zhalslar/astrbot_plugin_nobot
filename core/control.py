@@ -82,18 +82,19 @@ class BotController:
         if gid not in self.conf["monitoring_groups"]:
             return
 
-        bid = event.get_self_id()
+        sender_id = event.get_sender_id()
 
         # 没有人机记录，跳过
-        if not self.db.exists(bid):
+        if not self.db.exists(sender_id):
             return
 
         # 未在本群被标记成人机，跳过
-        if bid not in await self.db.get(bid, "gids", []):
+        if sender_id not in await self.db.get(sender_id, "gids", []):
             return
 
         # 群主/管理员的消息，跳过
-        role = getattr(event.message_obj.raw_message.get("sender", {}), "role", None)  # type: ignore
+        raw = getattr(event.message_obj, "raw_message", {}) or {}
+        role = raw.get("sender", {}).get("role")
         if role in ["owner", "admin"]:
             return
 
@@ -104,7 +105,7 @@ class BotController:
 
         # 规则一：文本太长
         if len(event.message_str) > self.conf["max_length"]:
-            yield event.plain_result("干嘛发这么长的文本！")
+            await event.send(event.plain_result("干嘛发这么长的文本！"))
             await self._punish(event, sender_id)
             return
 

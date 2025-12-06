@@ -24,7 +24,7 @@ def get_ats(event: AiocqhttpMessageEvent) -> list[str]:
     ]
 
 
-@staticmethod
+
 async def set_group_ban(
     event: AiocqhttpMessageEvent, user_id: str | int, duration: int = 0
 ):
@@ -39,7 +39,6 @@ async def set_group_ban(
         logger.error(f"禁言{user_id}失败: {e}")
 
 
-@staticmethod
 async def delete_msg(event: AiocqhttpMessageEvent):
     """撤回消息"""
     try:
