@@ -103,7 +103,7 @@ class NobotPlugin(Star):
     async def handle_empty_mention(self, event: AiocqhttpMessageEvent):
         """找出群里的人机"""
         gid = event.get_group_id()
-        bids = await self.llm.judge_bot(client=event.bot, group_id=gid)
+        bids = await self.llm.judge_bot(event)
         nicknames = []
         for bid in bids:
             nickname = await get_nickname(event, bid)

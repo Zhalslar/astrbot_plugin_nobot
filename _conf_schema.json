@@ -1,4 +1,4 @@
-{   
+{
     "monitoring_groups": {
         "description": "监控群",
         "type": "list",
@@ -29,10 +29,10 @@
         "hint": "人机发言违规时被禁言的时长（单位为秒）",
         "default": 1800
     },
-    "ban_sleep": {
-        "description": "通融时间",
+    "history_msg_rounds": {
+        "description": "找人机时轮询消息的轮数",
         "type": "int",
-        "hint": "当机器人是被@唤醒时，人机检测程序会睡眠一段时间，给人机发言的机会（单位为秒）",
-        "default": 3
+        "hint": "插件是调用协议端接口获取历史消息，此值设置获取的轮询轮数，每轮固定200条。若设为 0 则换用Astrbot自带的会话上下文",
+        "default": 10
     }
 }
