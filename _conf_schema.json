@@ -2,45 +2,8 @@
     "monitoring_groups": {
         "description": "监控群",
         "type": "list",
-        "hint": "监控这些群，如果人机发言超过限制，会被禁言",
+        "hint": "启用人机禁言的群聊， 可用命令 “人机禁言 开/关” 单独为当前群聊设置 ",
         "default": []
-    },
-    "test_cmds": {
-        "description": "测试人机用的命令",
-        "type": "list",
-        "hint": "执行“找人机”命令时，bot会用这些指令勾引其他人机发言",
-        "default": [
-            "/help",
-            "#help",
-            "-help",
-            "。help"
-        ]
-    },
-    "bot_words": {
-        "description": "人机关键词",
-        "type": "list",
-        "hint": "找人机时，用户消息含有这些字符时会被标记被人机",
-        "default": [
-            "#",
-            "/",
-            ".",
-            ":",
-            "~",
-            "（",
-            "）",
-            "(",
-            ")",
-            "[",
-            "]",
-            "{",
-            "}"
-        ]
-    },
-    "test_interval": {
-        "description": "发送测试命令的时间间隔",
-        "type": "int",
-        "hint": "单位为秒",
-        "default": 2
     },
     "max_length": {
         "description": "消息最大长度限制",
@@ -71,39 +34,5 @@
         "type": "int",
         "hint": "当机器人是被@唤醒时，人机检测程序会睡眠一段时间，给人机发言的机会（单位为秒）",
         "default": 3
-    },
-    "bot_data_list": {
-        "description": "人机数据",
-        "type": "list",
-        "hint": "存储着所有群聊的人机数据，请不要轻易删除数据，删除后所有状态重置",
-        "invisible": true,
-        "default": [
-            {}
-        ]
-    },
-    "ignore_cmds": {
-        "description": "忽略命令",
-        "type": "list",
-        "hint": "屏蔽非管理员发送的命令，防止被其他人机触发",
-        "default": [
-            "help",
-            "plugin",
-            "t2i",  
-            "tts",
-            "sid",
-            "op",
-            "wl",
-            "llm",
-            "provider",
-            "model",
-            "ls",
-            "new",
-            "switch",
-            "rename",
-            "reset",
-            "history",
-            "tool ls",
-            "sebsearch"
-        ]
-     }
+    }
 }
