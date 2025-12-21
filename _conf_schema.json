@@ -1,20 +1,30 @@
 {
     "monitoring_groups": {
-        "description": "监控群",
+        "description": "启用人机禁言的群",
         "type": "list",
-        "hint": "启用人机禁言的群聊， 可用命令 “人机禁言 开/关” 单独为当前群聊设置 ",
+        "hint": "可用命令 “人机禁言 开/关” 单独为当前群聊设置 ",
         "default": []
     },
     "max_length": {
         "description": "消息最大长度限制",
         "type": "int",
         "hint": "发言规则一：人机发言超过此长度时会被禁言（单位为字）",
+        "slider": {
+            "min": 0,
+            "max": 200,
+            "step": 10
+        },
         "default": 150
     },
     "speak_threshold": {
         "description": "发言间隔时间限制",
         "type": "int",
         "hint": "发言规则二：人机前后两次发言间隔小于此值时会被禁言（单位为秒）",
+        "slider": {
+            "min": 0,
+            "max": 600,
+            "step": 1
+        },
         "default": 20
     },
     "is_delete_msg": {
@@ -27,12 +37,22 @@
         "description": "禁言时长",
         "type": "int",
         "hint": "人机发言违规时被禁言的时长（单位为秒）",
+        "slider": {
+            "min": 0,
+            "max": 3600,
+            "step": 60
+        },
         "default": 1800
     },
     "history_msg_rounds": {
         "description": "找人机时轮询消息的轮数",
         "type": "int",
         "hint": "插件是调用协议端接口获取历史消息，此值设置获取的轮询轮数，每轮固定200条。若设为 0 则换用Astrbot自带的会话上下文",
+        "slider": {
+            "min": 10,
+            "max": 80,
+            "step": 1
+        },
         "default": 10
     }
 }

@@ -1,6 +1,6 @@
 
 from astrbot.api.event import filter
-from astrbot.api.star import Context, Star, register
+from astrbot.api.star import Context, Star
 from astrbot.core.config.astrbot_config import AstrBotConfig
 from astrbot.core.platform.astr_message_event import AstrMessageEvent
 from astrbot.core.platform.sources.aiocqhttp.aiocqhttp_message_event import (
@@ -15,17 +15,15 @@ from .core.llm import LLMAction
 from .utils import get_ats, get_nickname, parse_bool
 
 
-@register("astrbot_plugin_nobot", "Zhalslar", "...", "...")
 class NobotPlugin(Star):
     def __init__(self, context: Context, config: AstrBotConfig):
         super().__init__(context)
         self.context = context
         self.conf = config
-        self.plugin_data_dir = StarTools.get_data_dir("astrbot_plugin_nobot")
-        json_path = self.plugin_data_dir / "bot_data.json"
+        self.data_dir = StarTools.get_data_dir("astrbot_plugin_nobot")
 
         # 机器人监控数据库
-        self.db = BotMonitorDB(json_path)
+        self.db = BotMonitorDB(self.data_dir)
         # llm 调用类
         self.llm = LLMAction(self.context, self.conf)
         # 人机控制器

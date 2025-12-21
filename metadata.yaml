@@ -1,7 +1,7 @@
-name: astrbot_plugin_nobot # 这是你的插件的唯一识别名。
+name: astrbot_plugin_nobot
 display_name: 找人机
-desc: 人机去死！找出并禁言群里的人机!  # 插件简短描述
-help: None
-version: v1.0.4 # 插件版本号。格式：v1.1.1 或者 v1.1
-author: Zhalslar # 作者
-repo: https://github.com/Zhalslar/astrbot_plugin_nobot # 插件的仓库地址
+desc: 人机去死！找出并禁言群里的人机!
+help: 略
+version: v1.0.4
+author: Zhalslar
+repo: https://github.com/Zhalslar/astrbot_plugin_nobot

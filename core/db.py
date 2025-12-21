@@ -11,8 +11,8 @@ class BotMonitorDB:
     - 以 bid（机器人ID）为主键
     """
 
-    def __init__(self, json_path: Path):
-        self.json_path = json_path
+    def __init__(self, data_dir: Path):
+        self.json_path = data_dir / "bot_data.json"
         self._cache: dict[str, dict] = {}
         self.default_data = {
             "nickname": "",
