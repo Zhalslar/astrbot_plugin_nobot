@@ -70,12 +70,11 @@ class LLMAction:
             raise ValueError("未配置 LLM 提供商")
 
         history_text = ""
-        contexts = {}
+        contexts = []
         if (
             isinstance(event, AiocqhttpMessageEvent)
             and (self.config["history_msg_rounds"])
         ):
-            print("[Coze] 获取群聊历史消息")
             history_text = await self._get_msg_contexts(event)
         else:
             contexts = await self._get_contexts(event)

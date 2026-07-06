@@ -1,4 +1,3 @@
-
 from astrbot.api.event import filter
 from astrbot.api.star import Context, Star
 from astrbot.core.config.astrbot_config import AstrBotConfig
@@ -32,7 +31,9 @@ class NobotPlugin(Star):
     @filter.event_message_type(EventMessageType.GROUP_MESSAGE)
     @filter.permission_type(filter.PermissionType.ADMIN)
     @filter.command("人机禁言")
-    async def set_bot_ban(self, event: AstrMessageEvent, mode_str: str | bool | None = None):
+    async def set_bot_ban(
+        self, event: AstrMessageEvent, mode_str: str | bool | None = None
+    ):
         """人机禁言"""
         gid = event.get_group_id()
         mode = parse_bool(mode_str)
@@ -49,7 +50,6 @@ class NobotPlugin(Star):
             case None:
                 mode = gid in groups
         yield event.plain_result(f"本群人机禁言：{mode}")
-
 
     @filter.event_message_type(EventMessageType.GROUP_MESSAGE)
     @filter.permission_type(filter.PermissionType.ADMIN)
@@ -102,6 +102,9 @@ class NobotPlugin(Star):
         """找出群里的人机"""
         gid = event.get_group_id()
         bids = await self.llm.judge_bot(event)
+        self_id = event.get_self_id()
+        if self_id in bids:
+            bids.remove(self_id)
         nicknames = []
         for bid in bids:
             nickname = await get_nickname(event, bid)
@@ -110,7 +113,6 @@ class NobotPlugin(Star):
                 await self.db.add(bid, "gids", gid)
                 await self.db.set(bid, "nickname", nickname)
         yield event.plain_result(f"找到的人机: {nicknames}")
-
 
     @filter.event_message_type(EventMessageType.GROUP_MESSAGE)
     async def handle_msg(self, event: AiocqhttpMessageEvent):
