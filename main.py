@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from astrbot.api.event import filter
 from astrbot.api.star import Context, Star
 from astrbot.core.config.astrbot_config import AstrBotConfig
@@ -6,26 +8,23 @@ from astrbot.core.platform.sources.aiocqhttp.aiocqhttp_message_event import (
     AiocqhttpMessageEvent,
 )
 from astrbot.core.star.filter.event_message_type import EventMessageType
-from astrbot.core.star.star_tools import StarTools
+from astrbot.core.utils.astrbot_path import get_astrbot_plugin_data_path
 
 from .core.control import BotController
 from .core.db import BotMonitorDB
 from .core.llm import LLMAction
 from .utils import get_ats, get_nickname, parse_bool
 
+PLUGIN_NAME = "astrbot_plugin_nobot"
 
 class NobotPlugin(Star):
     def __init__(self, context: Context, config: AstrBotConfig):
         super().__init__(context)
         self.context = context
         self.conf = config
-        self.data_dir = StarTools.get_data_dir("astrbot_plugin_nobot")
-
-        # 机器人监控数据库
+        self.data_dir = Path(get_astrbot_plugin_data_path()) / PLUGIN_NAME
         self.db = BotMonitorDB(self.data_dir)
-        # llm 调用类
         self.llm = LLMAction(self.context, self.conf)
-        # 人机控制器
         self.controller = BotController(self.context, self.conf, self.db)
 
     @filter.event_message_type(EventMessageType.GROUP_MESSAGE)
@@ -34,7 +33,7 @@ class NobotPlugin(Star):
     async def set_bot_ban(
         self, event: AstrMessageEvent, mode_str: str | bool | None = None
     ):
-        """人机禁言"""
+        """人机禁言 开/关"""
         gid = event.get_group_id()
         mode = parse_bool(mode_str)
         groups = self.conf["monitoring_groups"]
@@ -86,13 +85,10 @@ class NobotPlugin(Star):
         """人机列表（仅展示昵称）"""
         gid = event.get_group_id()
         bots = self.db.get_all_bots(gid)
-
         if not bots:
             yield event.plain_result("本群暂无人机记录")
             return
-
         nicks = [data.get("nickname", bid) for bid, data in bots.items()]
-
         text = "本群人机：" + "\n".join(nicks)
         yield event.plain_result(text)
 
